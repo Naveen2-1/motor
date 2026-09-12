@@ -276,7 +276,7 @@ function initQuoteModal() {
       // Offer opening WhatsApp directly
       setTimeout(() => {
         if (confirm('Would you also like to send this requirement directly on WhatsApp for priority quotation?')) {
-          window.open(`https://wa.me/919000000000?text=${waText}`, '_blank');
+          window.open(`https://wa.me/919381619344?text=${waText}`, '_blank');
         }
       }, 600);
     });
@@ -314,43 +314,192 @@ function initContactForms() {
     });
   });
 
+  const nameInput = document.getElementById('contactName');
+  const phoneInput = document.getElementById('contactPhone');
+  const companyInput = document.getElementById('contactCompany');
+  const gstinInput = document.getElementById('contactGstin');
+  const gstinError = document.getElementById('contactGstinError');
+  const messageInput = document.getElementById('contactMessage');
+
+  // Standard Indian GSTIN regex: 2 digits state code, 5 letters PAN, 4 digits PAN, 1 letter PAN, 1 entity code, 'Z', 1 check character
+  const GSTIN_REGEX = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9A-Z]{1}Z[0-9A-Z]{1}$/;
+
+  function validateGstin(showError = true) {
+    if (!gstinInput) return true;
+    const rawVal = gstinInput.value.trim().toUpperCase();
+    gstinInput.value = rawVal;
+
+    let isValid = true;
+    let message = '';
+
+    if (!rawVal) {
+      isValid = false;
+      message = 'GST Number / GSTIN is required.';
+    } else if (rawVal.length !== 15) {
+      isValid = false;
+      message = `GSTIN must be 15 characters (currently ${rawVal.length}). e.g. 36CNZPA3669M1Z4`;
+    } else if (!GSTIN_REGEX.test(rawVal)) {
+      isValid = false;
+      message = 'Please enter a valid 15-digit GSTIN (e.g. 36CNZPA3669M1Z4).';
+    }
+
+    gstinInput.setCustomValidity(isValid ? '' : message);
+
+    if (gstinError) {
+      if (!isValid && showError) {
+        gstinError.innerHTML = `
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          <span>${message}</span>
+        `;
+        gstinError.style.display = 'flex';
+        gstinInput.classList.add('is-invalid');
+      } else if (isValid) {
+        gstinError.innerHTML = '';
+        gstinError.style.display = 'none';
+        gstinInput.classList.remove('is-invalid');
+      }
+    }
+
+    return isValid;
+  }
+
+  if (gstinInput) {
+    gstinInput.addEventListener('input', () => {
+      const start = gstinInput.selectionStart;
+      const end = gstinInput.selectionEnd;
+      gstinInput.value = gstinInput.value.toUpperCase();
+      if (start !== null && end !== null) {
+        gstinInput.setSelectionRange(start, end);
+      }
+      if (gstinError && gstinError.style.display !== 'none') {
+        validateGstin(false);
+      }
+    });
+
+    gstinInput.addEventListener('blur', () => {
+      validateGstin(true);
+    });
+  }
+
+  if (nameInput) {
+    nameInput.addEventListener('input', () => {
+      if (nameInput.value.trim()) nameInput.classList.remove('is-invalid');
+    });
+  }
+  if (phoneInput) {
+    phoneInput.addEventListener('input', () => {
+      if (phoneInput.value.trim()) phoneInput.classList.remove('is-invalid');
+    });
+  }
+
   contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const name = document.getElementById('contactName')?.value || 'Client';
-    const phone = document.getElementById('contactPhone')?.value || '';
-    const company = document.getElementById('contactCompany')?.value || 'N/A';
-    const message = document.getElementById('contactMessage')?.value || '';
 
-    if (!phone) {
-      alert('Please provide a contact phone or WhatsApp number so our technical team can reach you.');
+    let firstInvalid = null;
+
+    if (nameInput && !nameInput.value.trim()) {
+      nameInput.classList.add('is-invalid');
+      if (!firstInvalid) firstInvalid = nameInput;
+    } else if (nameInput) {
+      nameInput.classList.remove('is-invalid');
+    }
+
+    if (phoneInput && !phoneInput.value.trim()) {
+      phoneInput.classList.add('is-invalid');
+      if (!firstInvalid) firstInvalid = phoneInput;
+    } else if (phoneInput) {
+      phoneInput.classList.remove('is-invalid');
+    }
+
+    const isGstinValid = validateGstin(true);
+    if (!isGstinValid && !firstInvalid) {
+      firstInvalid = gstinInput;
+    }
+
+    if (firstInvalid) {
+      firstInvalid.focus();
       return;
     }
 
-    showToast(`Thank you, ${name}! Your message regarding "${selectedSubject}" has been received. We will respond promptly.`, 'success');
+    const name = nameInput?.value.trim() || 'Client';
+    const phone = phoneInput?.value.trim() || '';
+    const company = companyInput?.value.trim() || 'N/A';
+    const gstin = gstinInput?.value.trim().toUpperCase() || '';
+    const message = messageInput?.value.trim() || '';
+
+    const waText = encodeURIComponent(
+      `*Inertia Electric Motors - B2B Enquiry*\n` +
+      `• Subject: ${selectedSubject}\n` +
+      `• Name: ${name}\n` +
+      `• Company: ${company}\n` +
+      `• GSTIN: ${gstin}\n` +
+      `• Phone: ${phone}\n` +
+      `• Details: ${message || 'Please send catalog and price list'}`
+    );
+
+    showToast(`Thank you, ${name}! Your quotation inquiry for ${company !== 'N/A' ? company + ' ' : ''}(GSTIN: ${gstin}) regarding "${selectedSubject}" has been received. Our technical team will respond promptly.`, 'success');
     contactForm.reset();
+    validateGstin(false);
+
+    // Offer opening WhatsApp directly with GSTIN included
+    setTimeout(() => {
+      if (confirm('Would you also like to send this inquiry directly on WhatsApp for priority quotation?')) {
+        window.open(`https://wa.me/919381619344?text=${waText}`, '_blank');
+      }
+    }, 600);
   });
 
   const waSendBtn = document.getElementById('contactWhatsAppSend');
   if (waSendBtn) {
     waSendBtn.addEventListener('click', () => {
-      const name = document.getElementById('contactName')?.value || 'Client';
-      const phone = document.getElementById('contactPhone')?.value || '';
-      const company = document.getElementById('contactCompany')?.value || '';
-      const message = document.getElementById('contactMessage')?.value || '';
+      let firstInvalid = null;
+
+      if (nameInput && !nameInput.value.trim()) {
+        nameInput.classList.add('is-invalid');
+        if (!firstInvalid) firstInvalid = nameInput;
+      } else if (nameInput) {
+        nameInput.classList.remove('is-invalid');
+      }
+
+      if (phoneInput && !phoneInput.value.trim()) {
+        phoneInput.classList.add('is-invalid');
+        if (!firstInvalid) firstInvalid = phoneInput;
+      } else if (phoneInput) {
+        phoneInput.classList.remove('is-invalid');
+      }
+
+      const isGstinValid = validateGstin(true);
+      if (!isGstinValid && !firstInvalid) {
+        firstInvalid = gstinInput;
+      }
+
+      if (firstInvalid) {
+        firstInvalid.focus();
+        return;
+      }
+
+      const name = nameInput?.value.trim() || 'Client';
+      const phone = phoneInput?.value.trim() || '';
+      const company = companyInput?.value.trim() || 'N/A';
+      const gstin = gstinInput?.value.trim().toUpperCase() || '';
+      const message = messageInput?.value.trim() || '';
 
       const text = encodeURIComponent(
         `*Inertia Electric Motors - B2B Enquiry*\n` +
         `• Subject: ${selectedSubject}\n` +
         `• Name: ${name}\n` +
         `• Company: ${company}\n` +
+        `• GSTIN: ${gstin}\n` +
         `• Phone: ${phone}\n` +
         `• Details: ${message || 'Please send catalog and price list'}`
       );
 
-      window.open(`https://wa.me/919000000000?text=${text}`, '_blank');
+      window.open(`https://wa.me/919381619344?text=${text}`, '_blank');
     });
   }
+
 }
+
 
 /* ==========================================================================
    Toast Notification Helper
@@ -391,7 +540,7 @@ window.openWhatsAppQuote = function(productName = '') {
   if (productName) {
     msg += ` for: *${productName}*`;
   }
-  window.open(`https://wa.me/919000000000?text=${encodeURIComponent(msg)}`, '_blank');
+  window.open(`https://wa.me/919381619344?text=${encodeURIComponent(msg)}`, '_blank');
 };
 
 /* ==========================================================================

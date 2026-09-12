@@ -11,45 +11,84 @@ document.addEventListener('DOMContentLoaded', () => {
 function initProductsCatalogue() {
   const container = document.getElementById('productsCatalogueContainer');
   const searchInput = document.getElementById('productSearchInput');
-  const categoryTabs = document.querySelectorAll('.category-tab');
+  const clearBtn = document.getElementById('clearSearchBtn');
   const countBadge = document.getElementById('productsCountBadge');
 
-  let activeCategory = 'all';
   let searchQuery = '';
 
-  // Check URL query parameters for category or search (e.g. ?cat=motors or ?search=flameproof)
+  // Check URL query parameters for search or legacy category (e.g. ?search=flameproof or ?cat=gearing)
   const urlParams = new URLSearchParams(window.location.search);
-  const catParam = urlParams.get('cat');
   const searchParam = urlParams.get('search');
-
-  if (catParam) {
-    activeCategory = catParam.toLowerCase();
-    categoryTabs.forEach(tab => {
-      if (tab.getAttribute('data-category') === activeCategory) {
-        categoryTabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-      }
-    });
-  }
+  const catParam = urlParams.get('cat');
 
   if (searchParam && searchInput) {
-    searchQuery = searchParam.toLowerCase();
+    searchQuery = searchParam.trim().toLowerCase();
     searchInput.value = searchParam;
+  } else if (catParam && searchInput) {
+    const catSearchMap = {
+      // Legacy mappings
+      motors: 'motor',
+      gearing: 'geared',
+      pumps: 'pump',
+      power: 'transformer',
+      // New category slugs
+      'geared-motors': 'geared motor',
+      'ac-motors': 'AC motors',
+      'brake-motors': 'brake motor',
+      'dc-motors': 'DC motor',
+      'ahu-motors': 'AHU',
+      'crane-motors': 'crane duty'
+    };
+    const mapped = catSearchMap[catParam.toLowerCase()] || catParam.replace(/-/g, ' ');
+    searchQuery = mapped.trim().toLowerCase();
+    searchInput.value = mapped;
+  }
+
+  function updateClearBtn() {
+    if (!clearBtn) return;
+    clearBtn.style.display = searchInput && searchInput.value.trim().length > 0 ? 'flex' : 'none';
   }
 
   function filterAndRender() {
     if (typeof PRODUCTS_DATA === 'undefined') return;
 
     const filtered = PRODUCTS_DATA.filter(p => {
-      const matchCat = activeCategory === 'all' || p.category === activeCategory;
-      const matchSearch = !searchQuery || 
-        p.name.toLowerCase().includes(searchQuery) ||
-        p.desc.toLowerCase().includes(searchQuery) ||
-        p.powerRange.toLowerCase().includes(searchQuery) ||
-        p.chips.some(c => c.toLowerCase().includes(searchQuery)) ||
-        p.efficiency.toLowerCase().includes(searchQuery);
+      if (!searchQuery) return true;
+      const q = searchQuery.trim().toLowerCase();
 
-      return matchCat && matchSearch;
+      // Check numerical kW range matching (e.g. "7.5 kW", "15 kW")
+      let matchKwRange = false;
+      const kwMatch = q.match(/^([\d.]+)\s*(kw)?$/);
+      if (kwMatch && p.powerRange) {
+        const val = parseFloat(kwMatch[1]);
+        const rangeMatch = p.powerRange.match(/([\d.]+)\s*kW\s+to\s+([\d.]+)\s*kW/i);
+        if (rangeMatch && !isNaN(val)) {
+          const min = parseFloat(rangeMatch[1]);
+          const max = parseFloat(rangeMatch[2]);
+          if (val >= min && val <= max) {
+            matchKwRange = true;
+          }
+        }
+      }
+
+      return (
+        matchKwRange ||
+        (p.name && p.name.toLowerCase().includes(q)) ||
+        (p.desc && p.desc.toLowerCase().includes(q)) ||
+        (p.powerRange && p.powerRange.toLowerCase().includes(q)) ||
+        (p.efficiency && p.efficiency.toLowerCase().includes(q)) ||
+        (p.poles && p.poles.toLowerCase().includes(q)) ||
+        (p.rpm && p.rpm.toLowerCase().includes(q)) ||
+        (p.mounting && p.mounting.toLowerCase().includes(q)) ||
+        (p.enclosure && p.enclosure.toLowerCase().includes(q)) ||
+        (p.protection && p.protection.toLowerCase().includes(q)) ||
+        (p.voltage && p.voltage.toLowerCase().includes(q)) ||
+        (p.insulation && p.insulation.toLowerCase().includes(q)) ||
+        (p.categoryLabel && p.categoryLabel.toLowerCase().includes(q)) ||
+        (p.popularSpec && p.popularSpec.toLowerCase().includes(q)) ||
+        (p.application && p.application.toLowerCase().includes(q)) ||
+        (Array.isArray(p.chips) && p.chips.some(c => c.toLowerCase().includes(q)))
+      );
     });
 
     if (countBadge) {
@@ -102,22 +141,10 @@ function initProductsCatalogue() {
           </div>
 
           <div class="product-specs-compact">
-            <div class="spec-compact-item">
-              <span class="spec-compact-label">Rating</span>
-              <span class="spec-compact-value">${product.powerRange}</span>
-            </div>
-            <div class="spec-compact-item">
-              <span class="spec-compact-label">Efficiency</span>
-              <span class="spec-compact-value">${product.efficiency.split('/')[0]}</span>
-            </div>
-            <div class="spec-compact-item">
-              <span class="spec-compact-label">Protection</span>
-              <span class="spec-compact-value">${product.protection.split(' ')[0]}</span>
-            </div>
-            <div class="spec-compact-item">
-              <span class="spec-compact-label">Poles</span>
-              <span class="spec-compact-value">${product.poles.split(',')[0]}</span>
-            </div>
+            ${product.powerRange ? `<div class="spec-compact-item"><span class="spec-compact-label">Rating</span><span class="spec-compact-value">${product.powerRange}</span></div>` : ''}
+            ${product.efficiency ? `<div class="spec-compact-item"><span class="spec-compact-label">Efficiency</span><span class="spec-compact-value">${product.efficiency.split('/')[0]}</span></div>` : ''}
+            ${product.protection ? `<div class="spec-compact-item"><span class="spec-compact-label">Protection</span><span class="spec-compact-value">${product.protection.split(' ')[0]}</span></div>` : ''}
+            ${product.mounting ? `<div class="spec-compact-item"><span class="spec-compact-label">Mounting</span><span class="spec-compact-value">${product.mounting.split(',')[0].split('(')[0].trim()}</span></div>` : ''}
           </div>
 
           <div class="product-card-actions">
@@ -150,25 +177,39 @@ function initProductsCatalogue() {
   if (searchInput) {
     let timeout;
     searchInput.addEventListener('input', (e) => {
+      updateClearBtn();
       clearTimeout(timeout);
       timeout = setTimeout(() => {
         searchQuery = e.target.value.trim().toLowerCase();
         filterAndRender();
-      }, 180);
+      }, 100);
+    });
+
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        searchInput.value = '';
+        searchQuery = '';
+        updateClearBtn();
+        filterAndRender();
+      }
     });
   }
 
-  // Category tab switching
-  categoryTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      categoryTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      activeCategory = tab.getAttribute('data-category');
-      filterAndRender();
+  // Clear button click
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      if (searchInput) {
+        searchInput.value = '';
+        searchQuery = '';
+        updateClearBtn();
+        searchInput.focus();
+        filterAndRender();
+      }
     });
-  });
+  }
 
-  // Initial render
+  // Initial render & sync clear button state
+  updateClearBtn();
   filterAndRender();
 }
 
@@ -211,43 +252,27 @@ function showProductDetails(productId) {
         <p style="color: var(--text-secondary); line-height: 1.65; margin-bottom: 20px;">${product.desc}</p>
 
         <h4 style="font-size: 14px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">
-          Technical Specifications
+          Key Specifications
         </h4>
 
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; background: rgba(10,15,29,0.7); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 16px; margin-bottom: 24px;">
-          <div class="spec-compact-item">
-            <span class="spec-compact-label">Power Rating</span>
-            <span class="spec-compact-value" style="font-size: 14px; color: var(--accent-blue-light);">${product.powerRange}</span>
-          </div>
-          <div class="spec-compact-item">
-            <span class="spec-compact-label">Pole Configurations</span>
-            <span class="spec-compact-value" style="font-size: 14px;">${product.poles}</span>
-          </div>
-          <div class="spec-compact-item">
-            <span class="spec-compact-label">Synchronous Speed (RPM)</span>
-            <span class="spec-compact-value" style="font-size: 14px;">${product.rpm}</span>
-          </div>
-          <div class="spec-compact-item">
-            <span class="spec-compact-label">Mounting Standards</span>
-            <span class="spec-compact-value" style="font-size: 14px;">${product.mounting}</span>
-          </div>
-          <div class="spec-compact-item">
-            <span class="spec-compact-label">Enclosure / Cooling</span>
-            <span class="spec-compact-value" style="font-size: 14px;">${product.enclosure}</span>
-          </div>
-          <div class="spec-compact-item">
-            <span class="spec-compact-label">Ingress Protection</span>
-            <span class="spec-compact-value" style="font-size: 14px;">${product.protection}</span>
-          </div>
-          <div class="spec-compact-item">
-            <span class="spec-compact-label">Thermal Insulation</span>
-            <span class="spec-compact-value" style="font-size: 14px;">${product.insulation}</span>
-          </div>
-          <div class="spec-compact-item">
-            <span class="spec-compact-label">Efficiency Standard</span>
-            <span class="spec-compact-value" style="font-size: 14px; color: #4ade80;">${product.efficiency}</span>
-          </div>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; background: rgba(10,15,29,0.7); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 16px; margin-bottom: ${product.application ? '16px' : '24px'};">
+          ${product.powerRange ? `<div class="spec-compact-item"><span class="spec-compact-label">Power Rating</span><span class="spec-compact-value" style="font-size:14px;color:var(--accent-blue-light);">${product.powerRange}</span></div>` : ''}
+          ${product.poles ? `<div class="spec-compact-item"><span class="spec-compact-label">Pole Configurations</span><span class="spec-compact-value" style="font-size:14px;">${product.poles}</span></div>` : ''}
+          ${product.rpm ? `<div class="spec-compact-item"><span class="spec-compact-label">Speed / RPM</span><span class="spec-compact-value" style="font-size:14px;">${product.rpm}</span></div>` : ''}
+          ${product.mounting ? `<div class="spec-compact-item"><span class="spec-compact-label">Mounting</span><span class="spec-compact-value" style="font-size:14px;">${product.mounting}</span></div>` : ''}
+          ${product.enclosure ? `<div class="spec-compact-item"><span class="spec-compact-label">Enclosure / Cooling</span><span class="spec-compact-value" style="font-size:14px;">${product.enclosure}</span></div>` : ''}
+          ${product.protection ? `<div class="spec-compact-item"><span class="spec-compact-label">Ingress Protection</span><span class="spec-compact-value" style="font-size:14px;">${product.protection}</span></div>` : ''}
+          ${product.insulation ? `<div class="spec-compact-item"><span class="spec-compact-label">Thermal Insulation</span><span class="spec-compact-value" style="font-size:14px;">${product.insulation}</span></div>` : ''}
+          ${product.efficiency ? `<div class="spec-compact-item"><span class="spec-compact-label">Efficiency Standard</span><span class="spec-compact-value" style="font-size:14px;color:#4ade80;">${product.efficiency}</span></div>` : ''}
+          ${product.voltage ? `<div class="spec-compact-item"><span class="spec-compact-label">Supply Voltage</span><span class="spec-compact-value" style="font-size:14px;">${product.voltage}</span></div>` : ''}
         </div>
+
+        ${product.application ? `
+        <h4 style="font-size: 14px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px;">
+          Applications
+        </h4>
+        <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px; font-size: 14px;">${product.application}</p>
+        ` : ''}
 
         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
           <button class="btn btn-whatsapp" style="flex: 1; min-width: 220px;" onclick="openWhatsAppQuote('${product.name}')">

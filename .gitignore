@@ -1,0 +1,3 @@
+test-results/
+.system_generated/
+*.log
