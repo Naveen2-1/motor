@@ -1,0 +1,769 @@
+/* ============================================================
+   INERTIA ELECTRIC MOTORS — PREMIUM DARK INDUSTRIAL LAYER
+   File: css/premium.css
+   Loaded: LAST (after styles.css + home.css)
+   Purpose: Surgical dark-theme override — home page unification
+            + inner-page visual polish.
+   ============================================================ */
+
+/* ============================================================
+   SECTION 1 — SHARED DESIGN TOKENS
+   ============================================================ */
+:root {
+  --p-navy:          #0B1120;
+  --p-navy-surface:  #10192C;
+  --p-navy-elevated: #162438;
+  --p-navy-border:   #1C2E46;
+  --p-navy-border-strong: #243D5C;
+  --p-blue:          #1667C6;
+  --p-blue-dim:      rgba(22, 103, 198, 0.15);
+  --p-accent:        #5BA4E5;
+  --p-white:         #EFF4FC;
+  --p-silver:        #B8C8DC;
+  --p-muted:         #5C7A96;
+  --p-steel:         #3A5470;
+  --p-green:         #25D366;
+}
+
+/* ============================================================
+   SECTION 2 — HOME PAGE: DARK BACKGROUND UNIFICATION
+   ============================================================ */
+body.home-page {
+  background: var(--p-navy) !important;
+  color: var(--p-white) !important;
+}
+
+body.home-page a:not(.home-btn):not(.home-nav-link):not(.home-drawer-link):not(.footer-link):not(.home-link-arrow) {
+  color: inherit;
+}
+
+/* ============================================================
+   SECTION 3 — GLOBAL HEADER: PREMIUM CLEAN WHITE
+   Consistent across: index.html, about.html, products.html,
+                      industries.html, contact.html
+   ============================================================ */
+.main-header,
+body.home-page .main-header {
+  background: #FFFFFF !important;
+  border-bottom: 1px solid #E2E8F0 !important;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+.main-header.scrolled,
+body.home-page .main-header.scrolled {
+  background: #FFFFFF !important;
+  border-bottom-color: #CBD5E1 !important;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.07) !important;
+}
+
+.main-header .navbar,
+.main-header .home-nav-inner {
+  height: 72px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+@media (max-width: 768px) {
+  .main-header .navbar,
+  .main-header .home-nav-inner {
+    height: 64px !important;
+  }
+}
+
+/* --- Brand Logo on White Header --- */
+.main-header .brand-logo,
+.main-header .home-brand {
+  display: flex !important;
+  align-items: center !important;
+  text-decoration: none !important;
+  flex-shrink: 0 !important;
+}
+
+.main-header .brand-logo-img,
+.main-header .brand-logo img,
+.main-header .home-brand img {
+  height: 44px !important;
+  width: auto !important;
+  max-width: 170px !important;
+  object-fit: contain !important;
+  filter: none !important;
+  opacity: 1 !important;
+  display: block !important;
+  vertical-align: middle !important;
+}
+
+@media (max-width: 768px) {
+  .main-header .brand-logo-img,
+  .main-header .brand-logo img,
+  .main-header .home-brand img {
+    height: 36px !important;
+    max-width: 140px !important;
+  }
+}
+
+/* --- Navigation Links: Dark Navy + Blue Active Indicator --- */
+.main-header .nav-link,
+.main-header .home-nav-link,
+body.home-page .home-nav-link {
+  font-family: 'Lexend Deca', system-ui, sans-serif !important;
+  font-size: 14.5px !important;
+  font-weight: 500 !important;
+  color: #0F172A !important; /* dark navy */
+  text-decoration: none !important;
+  padding: 8px 0 !important;
+  position: relative !important;
+  border-bottom: 2px solid transparent !important;
+  background: transparent !important;
+  transition: color 0.2s ease, border-color 0.2s ease !important;
+}
+
+.main-header .nav-link:hover,
+.main-header .home-nav-link:hover,
+body.home-page .home-nav-link:hover {
+  color: #1667C6 !important; /* refined blue */
+  border-bottom-color: rgba(22, 103, 198, 0.35) !important;
+}
+
+.main-header .nav-link.active,
+.main-header .home-nav-link.active,
+body.home-page .home-nav-link.active {
+  color: #1667C6 !important;
+  font-weight: 700 !important; /* slightly stronger weight */
+  border-bottom-color: #1667C6 !important; /* refined blue indicator */
+}
+
+/* Remove glow underline from inner-page dark theme in styles.css */
+.main-header .nav-link.active::after {
+  display: none !important;
+}
+
+/* --- Request a Quote Button: Refined Blue --- */
+.main-header .btn-primary.btn-header-quote,
+.main-header .home-btn-primary.home-btn-quote-desktop,
+body.home-page .home-btn-primary.home-btn-quote-desktop {
+  background: #1667C6 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #1667C6 !important;
+  border-radius: 6px !important;
+  height: 42px !important;
+  padding: 0 18px !important;
+  font-family: 'Lexend Deca', system-ui, sans-serif !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 1px 3px rgba(22, 103, 198, 0.22) !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+.main-header .btn-primary.btn-header-quote:hover,
+.main-header .home-btn-primary.home-btn-quote-desktop:hover,
+body.home-page .home-btn-primary.home-btn-quote-desktop:hover {
+  background: #1254A3 !important;
+  border-color: #1254A3 !important;
+  box-shadow: 0 4px 12px rgba(22, 103, 198, 0.32) !important;
+  transform: translateY(-1px) !important;
+  color: #FFFFFF !important;
+}
+
+/* --- WhatsApp Button: Green Styling on White Header --- */
+.main-header .btn-whatsapp-header,
+.main-header .home-nav-actions .home-btn-whatsapp,
+body.home-page .home-nav-actions .home-btn-whatsapp {
+  background: #F0FDF4 !important;
+  border: 1px solid rgba(37, 211, 102, 0.35) !important;
+  border-radius: 6px !important;
+  height: 42px !important;
+  padding: 0 16px !important;
+  color: #15803D !important;
+  font-family: 'Lexend Deca', system-ui, sans-serif !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  transition: all 0.2s ease !important;
+}
+
+.main-header .btn-whatsapp-header svg,
+.main-header .home-nav-actions .home-btn-whatsapp svg {
+  stroke: #25D366 !important;
+  transition: stroke 0.2s ease !important;
+}
+
+.main-header .btn-whatsapp-header:hover,
+.main-header .home-nav-actions .home-btn-whatsapp:hover,
+body.home-page .home-nav-actions .home-btn-whatsapp:hover {
+  background: #25D366 !important;
+  border-color: #25D366 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.28) !important;
+  transform: translateY(-1px) !important;
+}
+
+.main-header .btn-whatsapp-header:hover svg,
+.main-header .home-nav-actions .home-btn-whatsapp:hover svg {
+  stroke: #FFFFFF !important;
+}
+
+/* --- Mobile Toggle (Hamburger) on White Header --- */
+.main-header .mobile-toggle,
+.main-header .home-mobile-toggle,
+body.home-page .home-mobile-toggle {
+  background: #F8FAFC !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 6px !important;
+  width: 42px !important;
+  height: 42px !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease !important;
+}
+
+.main-header .mobile-toggle:hover,
+.main-header .home-mobile-toggle:hover,
+body.home-page .home-mobile-toggle:hover {
+  background: #F1F5F9 !important;
+  border-color: #CBD5E1 !important;
+}
+
+.main-header .mobile-toggle span {
+  background-color: #0F172A !important;
+}
+
+.main-header .home-mobile-toggle svg line,
+body.home-page .home-mobile-toggle svg line {
+  stroke: #0F172A !important;
+}
+
+@media (max-width: 768px) {
+  .main-header .btn-primary.btn-header-quote,
+  .main-header .home-btn-primary.home-btn-quote-desktop,
+  body.home-page .home-btn-primary.home-btn-quote-desktop {
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-header .btn-whatsapp-header,
+  .main-header .home-nav-actions .home-btn-whatsapp,
+  body.home-page .home-nav-actions .home-btn-whatsapp {
+    height: 38px !important;
+    padding: 0 10px !important;
+    font-size: 12.5px !important;
+    gap: 5px !important;
+  }
+
+  .main-header .mobile-toggle,
+  .main-header .home-mobile-toggle,
+  body.home-page .home-mobile-toggle {
+    width: 38px !important;
+    height: 38px !important;
+  }
+}
+
+
+
+/* ============================================================
+   SECTION 4 — BRANDS TICKER: LIGHT STRIP → DARK SURFACE
+   ============================================================ */
+.home-brands-section,
+.brands-ticker-section {
+  background: var(--p-navy-surface) !important;
+  border-top-color: var(--p-navy-border) !important;
+  border-bottom-color: var(--p-navy-border) !important;
+}
+
+.home-brands-label,
+.ticker-title {
+  color: var(--p-accent) !important;
+}
+
+.home-brands-meta {
+  color: var(--p-muted) !important;
+}
+
+.brand-card {
+  background: var(--p-navy-elevated) !important;
+  border-color: var(--p-navy-border-strong) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  filter: grayscale(0.1) brightness(1.0) !important;
+  opacity: 0.95 !important;
+}
+
+.brand-card:hover {
+  border-color: var(--p-blue) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+  filter: grayscale(0) brightness(1.05) !important;
+  opacity: 1 !important;
+}
+
+.brand-card-name {
+  color: var(--p-silver) !important;
+}
+
+.brand-card-tag {
+  color: var(--p-muted) !important;
+}
+
+/* ============================================================
+   SECTION 5 — HOME SECTIONS: LIGHT ALTERNATING → DARK TONAL
+   ============================================================ */
+body.home-page .home-section-alt {
+  background: var(--p-navy-surface) !important;
+  border-top-color: var(--p-navy-border) !important;
+  border-bottom-color: var(--p-navy-border) !important;
+}
+
+/* ============================================================
+   SECTION 6 — SECTION TYPOGRAPHY
+   ============================================================ */
+body.home-page .home-pretitle {
+  color: var(--p-accent) !important;
+}
+
+body.home-page .home-pretitle::before {
+  background: var(--p-blue) !important;
+  width: 24px !important;
+  height: 2px !important;
+}
+
+body.home-page .home-title {
+  color: var(--p-white) !important;
+}
+
+body.home-page .home-subtitle {
+  color: var(--p-silver) !important;
+}
+
+body.home-page .home-link-arrow {
+  color: var(--p-accent) !important;
+  border-color: rgba(91, 164, 229, 0.3) !important;
+}
+
+body.home-page .home-link-arrow:hover {
+  color: #7BBCF0 !important;
+  border-color: rgba(91, 164, 229, 0.6) !important;
+}
+
+/* ============================================================
+   SECTION 7 — PRODUCT TICKER & CURATED SHOWCASE CARDS
+   ============================================================ */
+body.home-page .product-marquee-section {
+  background: var(--p-navy) !important;
+}
+
+.product-ticker-track .curated-showcase-card {
+  background: var(--p-navy-surface) !important;
+  border-color: var(--p-navy-border-strong) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+.product-ticker-track .curated-showcase-card:hover {
+  border-color: rgba(22, 103, 198, 0.55) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+  transform: translateY(-3px) !important;
+}
+
+.curated-card-media {
+  border-bottom-color: var(--p-navy-border) !important;
+  background: #0A1526 !important;
+}
+
+.curated-card-body {
+  background: var(--p-navy-surface) !important;
+}
+
+.curated-card-tag {
+  color: var(--p-accent) !important;
+}
+
+.curated-card-title {
+  color: var(--p-white) !important;
+}
+
+.curated-card-desc {
+  color: var(--p-silver) !important;
+}
+
+.curated-card-spec {
+  background: var(--p-blue-dim) !important;
+  color: var(--p-accent) !important;
+}
+
+.curated-card-action {
+  color: var(--p-accent) !important;
+}
+
+.curated-showcase-card:hover .curated-card-action {
+  color: #7BBCF0 !important;
+}
+
+.pcat-card {
+  background: var(--p-navy-surface) !important;
+  border-color: var(--p-navy-border-strong) !important;
+}
+
+.pcat-card:hover {
+  border-color: rgba(22, 103, 198, 0.5) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+.pcat-img-wrap {
+  background-color: #0A1526 !important;
+  border-bottom-color: var(--p-navy-border) !important;
+}
+
+.pcat-body {
+  background: var(--p-navy-surface) !important;
+}
+
+.pcat-badge {
+  color: var(--p-accent) !important;
+}
+
+.pcat-name {
+  color: var(--p-white) !important;
+}
+
+.pcat-spec {
+  color: var(--p-muted) !important;
+}
+
+/* ============================================================
+   SECTION 8 — ENGINEERS SECTION BODY TEXT
+   ============================================================ */
+body.home-page .home-engineers-copy p {
+  color: var(--p-silver) !important;
+}
+
+body.home-page .home-sub-img-box {
+  border-color: var(--p-navy-border-strong) !important;
+}
+
+body.home-page .home-dual-frame::before {
+  border-color: rgba(22, 103, 198, 0.25) !important;
+}
+
+/* Motor photography: full saturation */
+body.home-page .home-main-img-box img,
+body.home-page .home-sub-img-box img {
+  filter: saturate(1.0) contrast(1.04) !important;
+}
+
+/* ============================================================
+   SECTION 9 — HOME PRODUCT CARDS
+   ============================================================ */
+.home-product-card {
+  background: var(--p-navy-surface) !important;
+  border-color: var(--p-navy-border-strong) !important;
+}
+
+.home-product-card:hover {
+  border-color: rgba(22, 103, 198, 0.5) !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45) !important;
+}
+
+.home-product-media {
+  background-color: #0A1526 !important;
+  border-bottom-color: var(--p-navy-border) !important;
+}
+
+.home-product-body {
+  background: var(--p-navy-surface) !important;
+}
+
+.home-product-title {
+  color: var(--p-white) !important;
+}
+
+.home-product-spec {
+  color: var(--p-accent) !important;
+}
+
+.home-product-desc {
+  color: var(--p-silver) !important;
+}
+
+/* ============================================================
+   SECTION 10 — HOME NAMEPLATE / CTA BOX
+   ============================================================ */
+body.home-page .home-nameplate-box {
+  background: var(--p-navy-elevated) !important;
+  border-color: var(--p-navy-border-strong) !important;
+  border-left-color: var(--p-blue) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.home-page .home-nameplate-box:hover {
+  border-color: rgba(22, 103, 198, 0.5) !important;
+  border-left-color: var(--p-accent) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.home-page .home-nameplate-title {
+  color: var(--p-white) !important;
+}
+
+body.home-page .home-nameplate-desc {
+  color: var(--p-silver) !important;
+}
+
+/* ============================================================
+   SECTION 11 — HOME BADGES
+   ============================================================ */
+body.home-page .home-badge {
+  background: var(--p-navy-elevated) !important;
+  border-color: var(--p-navy-border-strong) !important;
+  color: var(--p-silver) !important;
+}
+
+body.home-page .home-badge-blue {
+  background: var(--p-blue-dim) !important;
+  border-color: rgba(22, 103, 198, 0.35) !important;
+  color: var(--p-accent) !important;
+}
+
+body.home-page .home-badge-green {
+  background: rgba(37, 211, 102, 0.1) !important;
+  border-color: rgba(37, 211, 102, 0.3) !important;
+  color: #4ade80 !important;
+}
+
+/* ============================================================
+   SECTION 12 — HOME BUTTONS: WHITE-BG VARIANTS → DARK
+   ============================================================ */
+body.home-page .home-btn-whatsapp {
+  background-color: rgba(37, 211, 102, 0.1) !important;
+  color: #4ade80 !important;
+  border-color: rgba(37, 211, 102, 0.35) !important;
+  box-shadow: none !important;
+}
+
+body.home-page .home-btn-whatsapp:hover {
+  background-color: var(--p-green) !important;
+  color: #FFFFFF !important;
+  border-color: var(--p-green) !important;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3) !important;
+}
+
+body.home-page .home-btn-secondary {
+  background-color: var(--p-navy-elevated) !important;
+  color: var(--p-white) !important;
+  border-color: var(--p-navy-border-strong) !important;
+  box-shadow: none !important;
+}
+
+body.home-page .home-btn-secondary:hover {
+  background-color: var(--p-navy-border) !important;
+  border-color: rgba(91, 164, 229, 0.4) !important;
+}
+
+/* ============================================================
+   SECTION 13 — INNER PAGES: REFINED HOVER STATES
+   ============================================================ */
+.product-card:hover {
+  border-color: rgba(22, 103, 198, 0.5) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(22, 103, 198, 0.2) !important;
+  transform: translateY(-3px) !important;
+}
+
+.industry-card:hover {
+  border-color: rgba(22, 103, 198, 0.5) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(22, 103, 198, 0.2) !important;
+  transform: translateY(-3px) !important;
+}
+
+.capability-card:hover {
+  border-color: rgba(22, 103, 198, 0.5) !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(22, 103, 198, 0.18) !important;
+  transform: translateY(-3px) !important;
+}
+
+.about-profile-frame:hover {
+  border-color: rgba(22, 103, 198, 0.4) !important;
+  box-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.7), 0 0 24px rgba(22, 103, 198, 0.1) !important;
+}
+
+/* ============================================================
+   SECTION 14 — SECTION PRE-TITLE: WIDER ACCENT RULE
+   ============================================================ */
+.section-pretitle {
+  color: var(--p-accent) !important;
+}
+
+.section-pretitle::before {
+  width: 24px !important;
+  height: 2px !important;
+  background: var(--p-blue) !important;
+}
+
+/* ============================================================
+   SECTION 15 — PRODUCT/INDUSTRY CARD BADGES: REFINED COLOR
+   ============================================================ */
+.product-card-badge {
+  border-color: rgba(22, 103, 198, 0.4) !important;
+  color: var(--p-accent) !important;
+  background: rgba(11, 17, 32, 0.88) !important;
+}
+
+.product-card-icon,
+.industry-card-icon-wrap {
+  border-color: rgba(22, 103, 198, 0.35) !important;
+  color: var(--p-accent) !important;
+}
+
+/* ============================================================
+   SECTION 16 — FOCUS STATES: REFINED BLUE RING
+   ============================================================ */
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: var(--p-accent) !important;
+  box-shadow: 0 0 0 3px rgba(22, 103, 198, 0.22) !important;
+}
+
+.catalogue-search-bar .search-input:focus {
+  border-color: var(--p-accent) !important;
+  box-shadow: 0 0 0 3px rgba(22, 103, 198, 0.22), 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* ============================================================
+   SECTION 17 — FOOTER: DEEPER DARK
+   ============================================================ */
+.site-footer {
+  background: #06090F !important;
+  border-top-color: var(--p-navy-border) !important;
+}
+
+.footer-link:hover {
+  color: var(--p-accent) !important;
+}
+
+.footer-contact-item svg {
+  color: var(--p-accent) !important;
+}
+
+/* ============================================================
+   SECTION 18 — FLOATING WHATSAPP: REFINED SHADOW
+   ============================================================ */
+.floating-whatsapp {
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4) !important;
+}
+
+.floating-whatsapp:hover {
+  box-shadow: 0 8px 28px rgba(37, 211, 102, 0.5) !important;
+  transform: scale(1.06) translateY(-2px) !important;
+}
+
+/* ============================================================
+   SECTION 19 — KEYBOARD FOCUS ACCESSIBILITY
+   ============================================================ */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--p-accent) !important;
+  outline-offset: 2px !important;
+}
+
+/* ============================================================
+   SECTION 20 — HOME INDUSTRIES CARDS: DARK REFINED SURFACE
+   ============================================================ */
+.home-ind-card {
+  background: var(--p-navy-surface) !important;
+  border-color: var(--p-navy-border-strong) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
+}
+
+.home-ind-card:hover {
+  border-color: rgba(22, 103, 198, 0.5) !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45) !important;
+  transform: translateY(-3px) !important;
+}
+
+.home-ind-icon-box {
+  background: var(--p-blue-dim) !important;
+  border-color: rgba(22, 103, 198, 0.35) !important;
+  color: var(--p-accent) !important;
+}
+
+.home-ind-card:hover .home-ind-icon-box {
+  background: rgba(22, 103, 198, 0.25) !important;
+  border-color: var(--p-blue) !important;
+}
+
+.home-ind-name {
+  color: var(--p-white) !important;
+}
+
+.home-ind-desc {
+  color: var(--p-silver) !important;
+}
+
+/* ============================================================
+   SECTION 21 — HOME QUOTE MODAL & MOBILE ACTIONS
+   ============================================================ */
+.home-modal-container {
+  background-color: var(--p-navy-surface) !important;
+  border-color: var(--p-navy-border-strong) !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7) !important;
+  color: var(--p-white) !important;
+}
+
+.home-modal-header {
+  border-bottom-color: var(--p-navy-border) !important;
+}
+
+.home-modal-title {
+  color: var(--p-white) !important;
+}
+
+.home-modal-desc {
+  color: var(--p-silver) !important;
+}
+
+.home-modal-close {
+  background-color: var(--p-navy-elevated) !important;
+  border-color: var(--p-navy-border) !important;
+  color: var(--p-white) !important;
+}
+
+.home-modal-close:hover {
+  background-color: var(--p-navy-border-strong) !important;
+}
+
+.home-form-label {
+  color: var(--p-silver) !important;
+}
+
+.home-form-input,
+.home-form-select,
+.home-form-textarea {
+  background-color: var(--p-navy-elevated) !important;
+  border-color: var(--p-navy-border-strong) !important;
+  color: var(--p-white) !important;
+}
+
+.home-form-input:focus,
+.home-form-select:focus,
+.home-form-textarea:focus {
+  border-color: var(--p-accent) !important;
+  box-shadow: 0 0 0 3px rgba(22, 103, 198, 0.22) !important;
+}
+
+.home-mobile-action-btn {
+  background-color: var(--p-navy-elevated) !important;
+  border-color: var(--p-navy-border) !important;
+  color: var(--p-silver) !important;
+}
+
