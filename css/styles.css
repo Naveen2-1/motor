@@ -992,7 +992,7 @@ ul, ol {
   display: flex;
   gap: 16px;
   width: max-content;
-  animation: product-ticker-bounce 26s ease-in-out infinite alternate;
+  animation: product-ticker-bounce 36s ease-in-out infinite alternate;
 }
 
 .product-ticker-track:hover {

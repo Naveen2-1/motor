@@ -1192,7 +1192,7 @@ body.home-page .brand-tag {
 
 .ticker-container.product-ticker-wrap,
 .product-ticker-wrap {
-  margin-top: 32px !important;
+  margin-top: 16px !important;
   overflow: hidden !important;
   position: relative !important;
   width: 100% !important;
@@ -1207,16 +1207,16 @@ body.home-page .brand-tag {
 .product-ticker-track,
 #productTrack {
   display: flex !important;
-  gap: 16px !important;
+  gap: 14px !important;
   width: max-content !important;
   flex-shrink: 0 !important;
   will-change: transform !important;
   animation-name: pingPongProducts !important;
-  animation-duration: 24s !important;
+  animation-duration: 36s !important;
   animation-timing-function: ease-in-out !important;
   animation-iteration-count: infinite !important;
   animation-direction: alternate !important;
-  padding: 8px 16px 18px 16px !important;
+  padding: 6px 16px 12px 16px !important;
 }
 
 .ticker-track.product-ticker-track:hover,
@@ -1240,21 +1240,22 @@ body.home-page .brand-tag {
 }
 
 .product-ticker-track .curated-showcase-card {
-  width: 270px;
-  min-width: 270px;
+  width: 280px;
+  min-width: 280px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
   background: #FFFFFF;
   border: 1px solid #D8E0E8;
   border-radius: var(--home-radius-md, 12px);
-  overflow: hidden;
+  overflow: visible;
   text-decoration: none;
   box-shadow: 0 4px 14px rgba(10, 18, 32, 0.05);
   transition: transform 0.3s var(--home-ease, ease), box-shadow 0.3s var(--home-ease, ease), border-color 0.3s var(--home-ease, ease);
   cursor: pointer;
   box-sizing: border-box;
   animation: none !important;
+  overflow: hidden;
 }
 
 .product-ticker-track .curated-showcase-card:hover {
@@ -1265,11 +1266,11 @@ body.home-page .brand-tag {
 
 .curated-card-media {
   background: #0A1220;
-  height: 132px;
+  height: 110px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px;
+  padding: 8px;
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid #D8E0E8;
@@ -1287,10 +1288,10 @@ body.home-page .brand-tag {
 }
 
 .curated-card-body {
-  padding: 14px 13px;
+  padding: 10px 12px 12px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   flex-grow: 1;
   background: linear-gradient(180deg, #FFFFFF, #FBFCFE);
 }
@@ -1304,42 +1305,42 @@ body.home-page .brand-tag {
 }
 
 .curated-card-title {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 700;
   color: #131C2A;
-  line-height: 1.3;
+  line-height: 1.25;
   margin: 0;
 }
 
 .curated-card-desc {
-  font-size: 11.5px;
+  font-size: 11px;
   color: var(--home-text-muted, #5A697A);
-  line-height: 1.45;
+  line-height: 1.4;
   margin: 0;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
 .curated-card-spec {
-  font-size: 11px;
+  font-size: 10px;
   color: #384656;
   background: rgba(20, 92, 158, 0.06);
-  padding: 4px 6px;
+  padding: 3px 6px;
   border-radius: var(--home-radius-sm, 6px);
-  line-height: 1.35;
+  line-height: 1.3;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
 .curated-card-action {
   margin-top: auto;
-  padding-top: 8px;
+  padding-top: 6px;
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
   color: var(--home-primary, #0B4F9C);
   text-transform: uppercase;
@@ -1360,14 +1361,33 @@ body.home-page .brand-tag {
 
 @media (max-width: 768px) {
   .product-ticker-track .curated-showcase-card {
-    width: 230px;
-    min-width: 230px;
+    width: 240px;
+    min-width: 240px;
   }
   .curated-card-media {
-    height: 120px;
+    height: 100px;
+    padding: 6px;
+  }
+  .curated-card-body {
+    padding: 8px 10px 10px;
+    gap: 3px;
+  }
+  .curated-card-title {
+    font-size: 13px;
+  }
+  .curated-card-desc {
+    font-size: 10.5px;
+  }
+  .curated-card-spec {
+    font-size: 9.5px;
+    padding: 2px 5px;
+  }
+  .curated-card-action {
+    font-size: 10px;
+    padding-top: 4px;
   }
   .curated-showcase-footer {
-    margin-top: 22px;
+    margin-top: 18px;
   }
 }
 
