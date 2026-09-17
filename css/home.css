@@ -1212,7 +1212,7 @@ body.home-page .brand-tag {
   flex-shrink: 0 !important;
   will-change: transform !important;
   animation-name: pingPongProducts !important;
-  animation-duration: 36s !important;
+  animation-duration: 55s !important;
   animation-timing-function: ease-in-out !important;
   animation-iteration-count: infinite !important;
   animation-direction: alternate !important;
@@ -1265,11 +1265,11 @@ body.home-page .brand-tag {
 
 .curated-card-media {
   background: #0A1220;
-  height: 170px;
+  height: 220px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 14px;
+  padding: 16px;
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid #D8E0E8;
@@ -1364,8 +1364,8 @@ body.home-page .brand-tag {
     min-width: 240px;
   }
   .curated-card-media {
-    height: 140px;
-    padding: 10px;
+    height: 190px;
+    padding: 14px;
   }
   .curated-card-body {
     padding: 8px 10px 8px;
