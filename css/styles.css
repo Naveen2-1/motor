@@ -2484,6 +2484,36 @@ ul, ol {
   gap: 16px;
 }
 
+.footer-logo {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 4px;
+}
+
+.footer-logo-img {
+  height: 44px;
+  width: auto;
+  max-width: 170px;
+  object-fit: contain;
+  opacity: 1;
+  visibility: visible;
+  display: block;
+  background-color: #ffffff;
+  border-radius: 4px;
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .footer-logo-img {
+    height: 38px;
+    max-width: 145px;
+  }
+}
+
 .footer-heading {
   font-size: 15px;
   font-weight: 600;

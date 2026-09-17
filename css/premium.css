@@ -644,6 +644,51 @@ body.home-page .home-btn-secondary:hover {
   border-top-color: var(--p-navy-border) !important;
 }
 
+/* --- Footer Brand Logo Visibility & High Contrast --- */
+.footer-logo,
+.site-footer .brand-logo,
+.home-footer .home-brand {
+  display: inline-flex !important;
+  align-items: center !important;
+  text-decoration: none !important;
+  position: relative !important;
+  z-index: 2 !important;
+  margin-bottom: 4px !important;
+  line-height: 1 !important;
+}
+
+.footer-logo-img,
+.site-footer .brand-logo-img,
+.site-footer .brand-logo img,
+.home-footer .home-brand img,
+.footer-logo img {
+  height: 44px !important;
+  width: auto !important;
+  max-width: 170px !important;
+  object-fit: contain !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+  filter: none !important;
+  background-color: #ffffff !important;
+  border-radius: 4px !important;
+  padding: 0 !important;
+  position: relative !important;
+  z-index: 2 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+}
+
+@media (max-width: 768px) {
+  .footer-logo-img,
+  .site-footer .brand-logo-img,
+  .site-footer .brand-logo img,
+  .home-footer .home-brand img,
+  .footer-logo img {
+    height: 38px !important;
+    max-width: 145px !important;
+  }
+}
+
 .footer-link:hover {
   color: var(--p-accent) !important;
 }
